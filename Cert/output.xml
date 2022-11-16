@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.9.13 on win32)" generated="20221116 18:24:39.717" rpa="true" schemaversion="3">
+<suite id="s1" name="Tasks" source="d:\Scripts\Robocorp\Certification 2\Cert\tasks.robot">
+<test id="s1-t1" name="Order robots from RobotSpareBin Industries Inc" line="19">
+<kw name="Fill using CSV">
+<kw name="Add heading" library="RPA.Dialogs">
+<arg>Enter the site from where to download the csv file</arg>
+<doc>Add a centered heading text element</doc>
+<status status="PASS" starttime="20221116 18:24:43.423" endtime="20221116 18:24:43.424"/>
+</kw>
+<kw name="Add text input" library="RPA.Dialogs">
+<arg>site</arg>
+<arg>label=Enter the site</arg>
+<tag>input</tag>
+<doc>Add a text input element</doc>
+<status status="PASS" starttime="20221116 18:24:43.426" endtime="20221116 18:24:43.427"/>
+</kw>
+<kw name="Run dialog" library="RPA.Dialogs">
+<var>${site}</var>
+<tag>dialog</tag>
+<doc>Create a dialog from all the defined elements and block
+until the user has handled it.</doc>
+<msg timestamp="20221116 18:24:43.429" level="INFO">Protecting keyword: RPA.Dialogs.Run dialog</msg>
+<msg timestamp="20221116 18:24:54.243" level="INFO">Log level changed from NONE to INFO.</msg>
+<status status="PASS" starttime="20221116 18:24:43.428" endtime="20221116 18:24:54.242"/>
+</kw>
+<kw name="Download" library="RPA.HTTP">
+<arg>${site.site}</arg>
+<arg>overwrite=True</arg>
+<doc>An alias for the ``HTTP Get`` keyword.</doc>
+<msg timestamp="20221116 18:24:54.247" level="INFO">Creating a new HTTP session</msg>
+<msg timestamp="20221116 18:24:54.249" level="INFO">Creating Session using : alias=rpasession_alias.httpsrobotsparebinindustries.com, url=https://robotsparebinindustries.com, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=True,                     debug=0 </msg>
+<status status="PASS" starttime="20221116 18:24:54.243" endtime="20221116 18:24:54.739"/>
+</kw>
+<kw name="Get Secret" library="RPA.Robocorp.Vault">
+<var>${secret}</var>
+<arg>credentials</arg>
+<doc>Read a secret from the configured source, e.g. Robocorp Vault,
+and return it as a ``Secret`` object.</doc>
+<msg timestamp="20221116 18:24:54.741" level="INFO">Protecting keyword: RPA.Robocorp.Vault.Get Secret</msg>
+<msg timestamp="20221116 18:24:54.744" level="INFO">Log level changed from NONE to INFO.</msg>
+<status status="PASS" starttime="20221116 18:24:54.740" endtime="20221116 18:24:54.743"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${secret}[site]</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20221116 18:24:54.745" level="INFO">https://robotsparebinindustries.com/</msg>
+<status status="PASS" starttime="20221116 18:24:54.744" endtime="20221116 18:24:54.746"/>
+</kw>
+<kw name="Open Available Browser" library="RPA.Browser.Selenium">
+<arg>${secret}[site]</arg>
+<doc>Attempts to open a browser on the user's device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</doc>
+<msg timestamp="20221116 18:24:54.748" level="INFO">Creating an instance of the Chrome WebDriver.</msg>
+<msg timestamp="20221116 18:24:55.809" level="INFO">Created Chrome browser with arguments: --disable-dev-shm-usage --disable-web-security --allow-running-insecure-content --no-sandbox</msg>
+<msg timestamp="20221116 18:24:55.809" level="INFO" html="true">&lt;p&gt;Attempted combinations:&lt;/p&gt;&lt;div class="doc"&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Browser&lt;/th&gt;&lt;th&gt;Download&lt;/th&gt;&lt;th&gt;Error&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Chrome&lt;/td&gt;&lt;td&gt;False&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</msg>
+<msg timestamp="20221116 18:24:55.810" level="INFO">Opening url 'https://robotsparebinindustries.com/'</msg>
+<status status="PASS" starttime="20221116 18:24:54.746" endtime="20221116 18:24:56.302"/>
+</kw>
+<kw name="Click Link" library="RPA.Browser.Selenium">
+<arg>Order your robot!</arg>
+<doc>Clicks a link identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:56.304" level="INFO">Clicking link 'Order your robot!'.</msg>
+<status status="PASS" starttime="20221116 18:24:56.303" endtime="20221116 18:24:56.365"/>
+</kw>
+<kw name="Read table from CSV" library="RPA.Tables">
+<var>${orders}</var>
+<arg>orders.csv</arg>
+<arg>header = True</arg>
+<doc>Read a CSV file as a table.</doc>
+<msg timestamp="20221116 18:24:56.373" level="INFO">${orders} = Table(columns=['Order number', 'Head', 'Body', 'Legs', 'Address'], rows=20)</msg>
+<status status="PASS" starttime="20221116 18:24:56.366" endtime="20221116 18:24:56.373"/>
+</kw>
+<for flavor="IN">
+<var>${order}</var>
+<value>@{orders}</value>
+<iter>
+<var name="${order}">{'Order number': '1', 'Head': '1', 'Body': '2', 'Legs': '3', 'Address': 'Address 123'}</var>
+<kw name="Fill the form">
+<arg>${order}</arg>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>OK</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:56.379" level="INFO">Clicking button 'OK'.</msg>
+<status status="PASS" starttime="20221116 18:24:56.378" endtime="20221116 18:24:56.439"/>
+</kw>
+<kw name="Select From List By Value" library="RPA.Browser.Selenium">
+<arg>id:head</arg>
+<arg>${order}[Head]</arg>
+<doc>Selects options from selection list ``locator`` by ``values``.</doc>
+<msg timestamp="20221116 18:24:56.442" level="INFO">Selecting options from selection list 'id:head' by value 1.</msg>
+<status status="PASS" starttime="20221116 18:24:56.440" endtime="20221116 18:24:56.517"/>
+</kw>
+<kw name="Select Radio Button" library="RPA.Browser.Selenium">
+<arg>body</arg>
+<arg>${order}[Body]</arg>
+<doc>Sets the radio button group ``group_name`` to ``value``.</doc>
+<msg timestamp="20221116 18:24:56.519" level="INFO">Selecting '2' from radio button 'body'.</msg>
+<status status="PASS" starttime="20221116 18:24:56.518" endtime="20221116 18:24:56.567"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>class:form-control</arg>
+<arg>${order}[Legs]</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:56.569" level="INFO">Typing text '3' into text field 'class:form-control'.</msg>
+<status status="PASS" starttime="20221116 18:24:56.567" endtime="20221116 18:24:56.625"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>id:address</arg>
+<arg>${order}[Address]</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:56.628" level="INFO">Typing text 'Address 123' into text field 'id:address'.</msg>
+<status status="PASS" starttime="20221116 18:24:56.626" endtime="20221116 18:24:56.688"/>
+</kw>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>id=preview</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:56.690" level="INFO">Clicking button 'id=preview'.</msg>
+<status status="PASS" starttime="20221116 18:24:56.689" endtime="20221116 18:24:56.735"/>
+</kw>
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<arg>3x</arg>
+<arg>1s</arg>
+<arg>Next button</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<kw name="Next button">
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>id=order</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:56.741" level="INFO">Clicking button 'id=order'.</msg>
+<status status="PASS" starttime="20221116 18:24:56.740" endtime="20221116 18:24:56.787"/>
+</kw>
+<kw name="Wait Until Page Contains Element" library="RPA.Browser.Selenium">
+<arg>id:receipt</arg>
+<doc>Waits until the element ``locator`` appears on the current page.</doc>
+<status status="PASS" starttime="20221116 18:24:56.788" endtime="20221116 18:24:56.797"/>
+</kw>
+<status status="PASS" starttime="20221116 18:24:56.737" endtime="20221116 18:24:56.798"/>
+</kw>
+<status status="PASS" starttime="20221116 18:24:56.736" endtime="20221116 18:24:56.799"/>
+</kw>
+<kw name="Capture Element Screenshot" library="RPA.Browser.Selenium">
+<arg>id:robot-preview-image</arg>
+<arg>${OUTPUT_DIR}${/}Orders/Robot ${order}[Order number].png</arg>
+<doc>Captures a screenshot from the element identified by ``locator`` and embeds it into log file.</doc>
+<msg timestamp="20221116 18:24:56.858" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Orders/Robot%201.png"&gt;&lt;img src="Orders/Robot%201.png" width="400px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" starttime="20221116 18:24:56.800" endtime="20221116 18:24:56.858"/>
+</kw>
+<kw name="Get Element Attribute" library="RPA.Browser.Selenium">
+<var>${sales_results_html}</var>
+<arg>id:receipt</arg>
+<arg>outerHTML</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20221116 18:24:56.878" level="INFO">${sales_results_html} = &lt;div id="receipt" class="alert alert-success" role="alert"&gt;&lt;h3&gt;Receipt&lt;/h3&gt;&lt;div&gt;2022-11-16T16:24:56.780Z&lt;/div&gt;&lt;p class="badge badge-success"&gt;RSB-ROBO-ORDER-49D2CKFYPG&lt;/p&gt;&lt;p&gt;Address 123&lt;/p&gt;&lt;div id="par...</msg>
+<status status="PASS" starttime="20221116 18:24:56.859" endtime="20221116 18:24:56.878"/>
+</kw>
+<kw name="Html To Pdf" library="RPA.PDF">
+<arg>${sales_results_html}</arg>
+<arg>${OUTPUT_DIR}${/}Orders/Robot ${order}[Order number].pdf</arg>
+<doc>Generate a PDF file from HTML content.</doc>
+<msg timestamp="20221116 18:24:56.882" level="INFO">Writing output to file D:\Scripts\Robocorp\Certification 2\Cert\Orders\Robot 1.pdf</msg>
+<msg timestamp="20221116 18:24:57.195" level="INFO">maxp pruned</msg>
+<msg timestamp="20221116 18:24:57.196" level="INFO">cmap pruned</msg>
+<msg timestamp="20221116 18:24:57.200" level="INFO">post pruned</msg>
+<msg timestamp="20221116 18:24:57.202" level="INFO">GDEF dropped</msg>
+<msg timestamp="20221116 18:24:57.202" level="INFO">GPOS dropped</msg>
+<msg timestamp="20221116 18:24:57.203" level="INFO">GSUB dropped</msg>
+<msg timestamp="20221116 18:24:57.206" level="INFO">name pruned</msg>
+<msg timestamp="20221116 18:24:57.216" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:57.217" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20221116 18:24:57.218" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20221116 18:24:57.218" level="INFO">Closing glyph list over 'glyf': 60 glyphs before</msg>
+<msg timestamp="20221116 18:24:57.219" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0021', 'uni002D', 'uni002E', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni003A', 'uni0041', 'uni0042', 'uni0043', 'uni0044', 'uni0045', 'uni0046', 'uni0047', 'uni0048', 'uni004B', 'uni004C', 'uni004F', 'uni0050', 'uni0052', 'uni0053', 'uni0054', 'uni0057', 'uni0059', 'uni005A', 'uni0061', 'uni0062', 'uni0063', 'uni0064', 'uni0065', 'uni0066', 'uni0067', 'uni0068', 'uni0069', 'uni006B', 'uni006C', 'uni006D', 'uni006E', 'uni006F', 'uni0070', 'uni0072', 'uni0073', 'uni0074', 'uni0075', 'uni0076', 'uni0077', 'uni0079', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20221116 18:24:57.220" level="INFO">Glyph IDs:   [0, 1, 2, 3, 65, 73, 84, 95, 137, 141, 161, 270, 280, 320, 374, 382, 395, 409, 456, 469, 493, 504, 575, 582, 594, 612, 645, 650, 660, 679, 715, 723, 752, 759, 775, 827, 837, 867, 884, 899, 932, 936, 950, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1329, 1345, 1346, 1361, 1404, 1407, 1681]</msg>
+<msg timestamp="20221116 18:24:57.221" level="INFO">Closed glyph list over 'glyf': 60 glyphs after</msg>
+<msg timestamp="20221116 18:24:57.221" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0021', 'uni002D', 'uni002E', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni003A', 'uni0041', 'uni0042', 'uni0043', 'uni0044', 'uni0045', 'uni0046', 'uni0047', 'uni0048', 'uni004B', 'uni004C', 'uni004F', 'uni0050', 'uni0052', 'uni0053', 'uni0054', 'uni0057', 'uni0059', 'uni005A', 'uni0061', 'uni0062', 'uni0063', 'uni0064', 'uni0065', 'uni0066', 'uni0067', 'uni0068', 'uni0069', 'uni006B', 'uni006C', 'uni006D', 'uni006E', 'uni006F', 'uni0070', 'uni0072', 'uni0073', 'uni0074', 'uni0075', 'uni0076', 'uni0077', 'uni0079', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20221116 18:24:57.222" level="INFO">Glyph IDs:   [0, 1, 2, 3, 65, 73, 84, 95, 137, 141, 161, 270, 280, 320, 374, 382, 395, 409, 456, 469, 493, 504, 575, 582, 594, 612, 645, 650, 660, 679, 715, 723, 752, 759, 775, 827, 837, 867, 884, 899, 932, 936, 950, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1329, 1345, 1346, 1361, 1404, 1407, 1681]</msg>
+<msg timestamp="20221116 18:24:57.223" level="INFO">Retaining 60 glyphs</msg>
+<msg timestamp="20221116 18:24:57.224" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.225" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.225" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.225" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.228" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20221116 18:24:57.230" level="INFO">cmap subsetted</msg>
+<msg timestamp="20221116 18:24:57.230" level="INFO">prep subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.231" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.231" level="INFO">post subsetted</msg>
+<msg timestamp="20221116 18:24:57.232" level="INFO">gasp subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.232" level="INFO">STAT subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.232" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.234" level="INFO">glyf subsetted</msg>
+<msg timestamp="20221116 18:24:57.235" level="INFO">head pruned</msg>
+<msg timestamp="20221116 18:24:57.236" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20221116 18:24:57.239" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:57.308" level="INFO">maxp pruned</msg>
+<msg timestamp="20221116 18:24:57.309" level="INFO">cmap pruned</msg>
+<msg timestamp="20221116 18:24:57.309" level="INFO">post pruned</msg>
+<msg timestamp="20221116 18:24:57.310" level="INFO">GDEF dropped</msg>
+<msg timestamp="20221116 18:24:57.310" level="INFO">GPOS dropped</msg>
+<msg timestamp="20221116 18:24:57.310" level="INFO">GSUB dropped</msg>
+<msg timestamp="20221116 18:24:57.312" level="INFO">name pruned</msg>
+<msg timestamp="20221116 18:24:57.322" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:57.323" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20221116 18:24:57.323" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20221116 18:24:57.324" level="INFO">Closing glyph list over 'glyf': 19 glyphs before</msg>
+<msg timestamp="20221116 18:24:57.324" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0041', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20221116 18:24:57.326" level="INFO">Glyph IDs:   [0, 1, 2, 3, 575, 759, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1345, 1346, 1681]</msg>
+<msg timestamp="20221116 18:24:57.326" level="INFO">Closed glyph list over 'glyf': 19 glyphs after</msg>
+<msg timestamp="20221116 18:24:57.326" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0041', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20221116 18:24:57.327" level="INFO">Glyph IDs:   [0, 1, 2, 3, 575, 759, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1345, 1346, 1681]</msg>
+<msg timestamp="20221116 18:24:57.328" level="INFO">Retaining 19 glyphs</msg>
+<msg timestamp="20221116 18:24:57.329" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.330" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.330" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.330" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.333" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20221116 18:24:57.335" level="INFO">cmap subsetted</msg>
+<msg timestamp="20221116 18:24:57.335" level="INFO">prep subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.336" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.336" level="INFO">post subsetted</msg>
+<msg timestamp="20221116 18:24:57.337" level="INFO">gasp subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.337" level="INFO">STAT subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.338" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.339" level="INFO">glyf subsetted</msg>
+<msg timestamp="20221116 18:24:57.340" level="INFO">head pruned</msg>
+<msg timestamp="20221116 18:24:57.341" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20221116 18:24:57.343" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:57.383" level="INFO">maxp pruned</msg>
+<msg timestamp="20221116 18:24:57.384" level="INFO">cmap pruned</msg>
+<msg timestamp="20221116 18:24:57.384" level="INFO">post pruned</msg>
+<msg timestamp="20221116 18:24:57.384" level="INFO">GDEF dropped</msg>
+<msg timestamp="20221116 18:24:57.385" level="INFO">GPOS dropped</msg>
+<msg timestamp="20221116 18:24:57.385" level="INFO">GSUB dropped</msg>
+<msg timestamp="20221116 18:24:57.386" level="INFO">name pruned</msg>
+<msg timestamp="20221116 18:24:57.395" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:57.401" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20221116 18:24:57.402" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20221116 18:24:57.402" level="INFO">Closing glyph list over 'glyf': 18 glyphs before</msg>
+<msg timestamp="20221116 18:24:57.403" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20221116 18:24:57.404" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20221116 18:24:57.404" level="INFO">Closed glyph list over 'glyf': 18 glyphs after</msg>
+<msg timestamp="20221116 18:24:57.405" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20221116 18:24:57.405" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20221116 18:24:57.406" level="INFO">Retaining 18 glyphs</msg>
+<msg timestamp="20221116 18:24:57.407" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.407" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.408" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.408" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.410" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20221116 18:24:57.412" level="INFO">cmap subsetted</msg>
+<msg timestamp="20221116 18:24:57.412" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.413" level="INFO">post subsetted</msg>
+<msg timestamp="20221116 18:24:57.414" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.415" level="INFO">glyf subsetted</msg>
+<msg timestamp="20221116 18:24:57.416" level="INFO">head pruned</msg>
+<msg timestamp="20221116 18:24:57.416" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20221116 18:24:57.418" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:57.454" level="INFO">maxp pruned</msg>
+<msg timestamp="20221116 18:24:57.455" level="INFO">cmap pruned</msg>
+<msg timestamp="20221116 18:24:57.455" level="INFO">post pruned</msg>
+<msg timestamp="20221116 18:24:57.455" level="INFO">GDEF dropped</msg>
+<msg timestamp="20221116 18:24:57.456" level="INFO">GPOS dropped</msg>
+<msg timestamp="20221116 18:24:57.456" level="INFO">GSUB dropped</msg>
+<msg timestamp="20221116 18:24:57.457" level="INFO">name pruned</msg>
+<msg timestamp="20221116 18:24:57.467" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:57.472" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20221116 18:24:57.472" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20221116 18:24:57.473" level="INFO">Closing glyph list over 'glyf': 18 glyphs before</msg>
+<msg timestamp="20221116 18:24:57.473" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20221116 18:24:57.474" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20221116 18:24:57.474" level="INFO">Closed glyph list over 'glyf': 18 glyphs after</msg>
+<msg timestamp="20221116 18:24:57.475" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20221116 18:24:57.475" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20221116 18:24:57.476" level="INFO">Retaining 18 glyphs</msg>
+<msg timestamp="20221116 18:24:57.477" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.477" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.478" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.478" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.481" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20221116 18:24:57.482" level="INFO">cmap subsetted</msg>
+<msg timestamp="20221116 18:24:57.482" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.483" level="INFO">post subsetted</msg>
+<msg timestamp="20221116 18:24:57.483" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20221116 18:24:57.485" level="INFO">glyf subsetted</msg>
+<msg timestamp="20221116 18:24:57.486" level="INFO">head pruned</msg>
+<msg timestamp="20221116 18:24:57.486" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20221116 18:24:57.488" level="INFO">glyf pruned</msg>
+<status status="PASS" starttime="20221116 18:24:56.879" endtime="20221116 18:24:57.507"/>
+</kw>
+<kw name="Create List" library="BuiltIn">
+<var>${files}</var>
+<arg>${OUTPUT_DIR}${/}Orders/Robot ${order}[Order number].png</arg>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20221116 18:24:57.510" level="INFO">${files} = ['D:\\Scripts\\Robocorp\\Certification 2\\Cert\\Orders/Robot 1.png']</msg>
+<status status="PASS" starttime="20221116 18:24:57.508" endtime="20221116 18:24:57.511"/>
+</kw>
+<kw name="Add Files To Pdf" library="RPA.PDF">
+<arg>${files}</arg>
+<arg>${OUTPUT_DIR}${/}Orders/Robot ${order}[Order number].pdf</arg>
+<arg>append=True</arg>
+<doc>Add images and/or pdfs to new PDF document</doc>
+<msg timestamp="20221116 18:24:57.521" level="INFO">Adding page: 0</msg>
+<msg timestamp="20221116 18:24:57.523" level="INFO">File D:\Scripts\Robocorp\Certification 2\Cert\Orders\Robot 1.png type: png</msg>
+<msg timestamp="20221116 18:24:57.524" level="INFO">Image parameters: {}</msg>
+<status status="PASS" starttime="20221116 18:24:57.512" endtime="20221116 18:24:57.805"/>
+</kw>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>id:order-another</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:57.807" level="INFO">Clicking button 'id:order-another'.</msg>
+<status status="PASS" starttime="20221116 18:24:57.806" endtime="20221116 18:24:57.932"/>
+</kw>
+<status status="PASS" starttime="20221116 18:24:56.377" endtime="20221116 18:24:57.933"/>
+</kw>
+<status status="PASS" starttime="20221116 18:24:56.376" endtime="20221116 18:24:57.934"/>
+</iter>
+<iter>
+<var name="${order}">{'Order number': '2', 'Head': '4', 'Body': '1', 'Legs': '5', 'Address': 'Address 456'}</var>
+<kw name="Fill the form">
+<arg>${order}</arg>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>OK</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:57.939" level="INFO">Clicking button 'OK'.</msg>
+<status status="PASS" starttime="20221116 18:24:57.938" endtime="20221116 18:24:57.973"/>
+</kw>
+<kw name="Select From List By Value" library="RPA.Browser.Selenium">
+<arg>id:head</arg>
+<arg>${order}[Head]</arg>
+<doc>Selects options from selection list ``locator`` by ``values``.</doc>
+<msg timestamp="20221116 18:24:57.975" level="INFO">Selecting options from selection list 'id:head' by value 4.</msg>
+<status status="PASS" starttime="20221116 18:24:57.974" endtime="20221116 18:24:58.023"/>
+</kw>
+<kw name="Select Radio Button" library="RPA.Browser.Selenium">
+<arg>body</arg>
+<arg>${order}[Body]</arg>
+<doc>Sets the radio button group ``group_name`` to ``value``.</doc>
+<msg timestamp="20221116 18:24:58.026" level="INFO">Selecting '1' from radio button 'body'.</msg>
+<status status="PASS" starttime="20221116 18:24:58.025" endtime="20221116 18:24:58.065"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>class:form-control</arg>
+<arg>${order}[Legs]</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:58.067" level="INFO">Typing text '5' into text field 'class:form-control'.</msg>
+<status status="PASS" starttime="20221116 18:24:58.066" endtime="20221116 18:24:58.117"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>id:address</arg>
+<arg>${order}[Address]</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:58.120" level="INFO">Typing text 'Address 456' into text field 'id:address'.</msg>
+<status status="PASS" starttime="20221116 18:24:58.118" endtime="20221116 18:24:58.174"/>
+</kw>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>id=preview</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:58.176" level="INFO">Clicking button 'id=preview'.</msg>
+<status status="PASS" starttime="20221116 18:24:58.175" endtime="20221116 18:24:58.216"/>
+</kw>
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<arg>3x</arg>
+<arg>1s</arg>
+<arg>Next button</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<kw name="Next button">
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>id=order</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20221116 18:24:58.221" level="INFO">Clicking button 'id=order'.</msg>
+<status status="PASS" starttime="20221116 18:24:58.220" endtime="20221116 18:24:58.261"/>
+</kw>
+<kw name="Wait Until Page Contains Element" library="RPA.Browser.Selenium">
+<arg>id:receipt</arg>
+<doc>Waits until the element ``locator`` appears on the current page.</doc>
+<status status="PASS" starttime="20221116 18:24:58.262" endtime="20221116 18:24:58.268"/>
+</kw>
+<status status="PASS" starttime="20221116 18:24:58.218" endtime="20221116 18:24:58.269"/>
+</kw>
+<status status="PASS" starttime="20221116 18:24:58.217" endtime="20221116 18:24:58.270"/>
+</kw>
+<kw name="Capture Element Screenshot" library="RPA.Browser.Selenium">
+<arg>id:robot-preview-image</arg>
+<arg>${OUTPUT_DIR}${/}Orders/Robot ${order}[Order number].png</arg>
+<doc>Captures a screenshot from the element identified by ``locator`` and embeds it into log file.</doc>
+<msg timestamp="20221116 18:24:58.321" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Orders/Robot%202.png"&gt;&lt;img src="Orders/Robot%202.png" width="400px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" starttime="20221116 18:24:58.270" endtime="20221116 18:24:58.321"/>
+</kw>
+<kw name="Get Element Attribute" library="RPA.Browser.Selenium">
+<var>${sales_results_html}</var>
+<arg>id:receipt</arg>
+<arg>outerHTML</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20221116 18:24:58.338" level="INFO">${sales_results_html} = &lt;div id="receipt" class="alert alert-success" role="alert"&gt;&lt;h3&gt;Receipt&lt;/h3&gt;&lt;div&gt;2022-11-16T16:24:58.256Z&lt;/div&gt;&lt;p class="badge badge-success"&gt;RSB-ROBO-ORDER-CMBROWK9L&lt;/p&gt;&lt;p&gt;Address 456&lt;/p&gt;&lt;div id="part...</msg>
+<status status="PASS" starttime="20221116 18:24:58.323" endtime="20221116 18:24:58.338"/>
+</kw>
+<kw name="Html To Pdf" library="RPA.PDF">
+<arg>${sales_results_html}</arg>
+<arg>${OUTPUT_DIR}${/}Orders/Robot ${order}[Order number].pdf</arg>
+<doc>Generate a PDF file from HTML content.</doc>
+<msg timestamp="20221116 18:24:58.342" level="INFO">Writing output to file D:\Scripts\Robocorp\Certification 2\Cert\Orders\Robot 2.pdf</msg>
+<msg timestamp="20221116 18:24:58.646" level="INFO">maxp pruned</msg>
+<msg timestamp="20221116 18:24:58.646" level="INFO">cmap pruned</msg>
+<msg timestamp="20221116 18:24:58.647" level="INFO">post pruned</msg>
+<msg timestamp="20221116 18:24:58.647" level="INFO">GDEF dropped</msg>
+<msg timestamp="20221116 18:24:58.648" level="INFO">GPOS dropped</msg>
+<msg timestamp="20221116 18:24:58.648" level="INFO">GSUB dropped</msg>
+<msg timestamp="20221116 18:24:58.650" level="INFO">name pruned</msg>
+<msg timestamp="20221116 18:24:58.660" level="INFO">glyf pruned</msg>
+<msg timestamp="20221116 18:24:58.661" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20221116 18:24:58.662" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20221116 18:24:58.662" level="INFO">Closing glyph list over 'glyf': 58 glyphs before</msg>
+<msg timestamp="20221116 18:24:58.662" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0021', 'uni002D', 'uni002E', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni003A', 'uni0041', 'uni0042', 'uni0043', 'uni0044', 'uni0045', 'uni0048', 'uni004B', 'uni004C', 'uni004D', 'uni004F', 'uni0052', 'uni0053', 'uni0054', 'uni0057', 'uni0059', 'uni005A', 'uni0061', 'uni0062', 'uni0063', 'uni0064', 'uni0065', 'uni0066', 'uni0067', 'uni0068', 'uni0069', 'uni006B', 'uni006C', 'uni006D', 'uni006E', 'uni006F', 'uni0070', 'uni0072', 'uni0073', 'uni0074', 'uni0075', 'uni0076', 'uni0077', 'uni0079', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20221116 18:24:58.664" level="INFO">Glyph IDs:   [0, 1, 2, 3, 65, 73, 84, 95, 161, 270, 280, 291, 320, 382, 395, 409, 456, 469, 493, 504, 575, 582, 594, 612, 645, 650, 660, 679, 715, 723, 752, 759, 775, 827, 837, 867, 884, 899, 932, 936, 950, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1329, 1345, 1346, 1361, 1404, 1407, 1681]</msg>
+<msg timestamp="20221116 18:24:58.664" level="INFO">Closed glyph list over 'glyf': 58 glyphs after</msg>
+<msg timestamp="20221116 18:24:58.665" level="INFO">

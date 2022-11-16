@@ -1,0 +1,11 @@
+==============================================================================
+Tasks :: Orders robots from RobotSpareBin Industries Inc. Saves the order H...
+==============================================================================
+Order robots from RobotSpareBin Industries Inc                        | FAIL |
+Keyword 'Next button' failed after retrying 3 times. The last error was: Element 'id:receipt' did not appear in 5 seconds.
+------------------------------------------------------------------------------
+Tasks :: Orders robots from RobotSpareBin Industries Inc. Saves th... | FAIL |
+1 task, 0 passed, 1 failed
+==============================================================================
+Output:  d:\Scripts\Robocorp\Certification 2\Cert\output\output.xml
+Log:     d:\Scripts\Robocorp\Certification 2\Cert\output\log.html
